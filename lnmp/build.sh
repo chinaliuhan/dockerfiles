@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t lnmp -f ./Dockerfile .
+docker build -t mylnmp -f ./Dockerfile .
