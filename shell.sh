@@ -1,0 +1,1 @@
+docker run -it --name myaptlnmp -p 80:80 -p 3306:3306 -p 6379:6379 -p 27017:27017 -v /Users/liuhao/dockerfolder:/root/dockerfolder -v /Users/liuhao/www:/var/www/html myaptlnmp  /bin/bash
