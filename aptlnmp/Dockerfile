@@ -56,7 +56,11 @@ RUN sudo apt-get install -y git\
     && sudo sed -i '/^short_open_tag.*=/c short_open_tag = On' /etc/php/7.0/fpm/php.ini\
     && sudo sed -i '/^short_open_tag.*=/c short_open_tag = On' /etc/php/7.0/cli/php.ini\
     && sudo sed -i '/error_reporting.*=/c error_reporting=E_ALL' /etc/php/7.0/fpm/php.ini\
+    && sudo sed -i '/error_reporting.*=/c error_reporting=E_ALL' /etc/php/7.0/cli/php.ini\
     && sudo sed -i '/display_errors.*=/c display_errors=On' /etc/php/7.0/fpm/php.ini\
+    && sudo sed -i '/display_errors.*=/c display_errors=On' /etc/php/7.0/cli/php.ini\
+    && sudo sed -i '/^;error_log.*=.*php_errors.log/c error_log=/var/log/php_errors.log' /etc/php/7.0/fpm/php.ini\
+    && sudo sed -i '/^;error_log.*=.*php_errors.log/c error_log=/var/log/php_errors.log' /etc/php/7.0/cli/php.ini\
     && sudo sed -i '/[^#]root.*www/c root /home/liuhao/www;' /etc/nginx/sites-available/default\
     && sudo sed -i '21a autoindex on;' /etc/nginx/nginx.conf\
     && sudo sed -i '21a autoindex_localtime on;' /etc/nginx/nginx.conf\
