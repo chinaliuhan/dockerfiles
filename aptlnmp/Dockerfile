@@ -53,8 +53,8 @@ RUN sudo apt-get install -y git\
 # Mysql5.7
 	&& sudo apt-get -y install mysql-server-5.7\
 # 修改配置文件
-    && sudo sed -i '/^short_open_tag/c short_open_tag = On' /etc/php/7.0/fpm/php.ini\
-    && sudo sed -i '/^short_open_tag/c short_open_tag = On' /etc/php/7.0/cli/php.ini\
+    && sudo sed -i '/^short_open_tag.*=/c short_open_tag = On' /etc/php/7.0/fpm/php.ini\
+    && sudo sed -i '/^short_open_tag.*=/c short_open_tag = On' /etc/php/7.0/cli/php.ini\
     && sudo sed -i '/error_reporting.*=/c error_reporting=E_ALL' /etc/php/7.0/fpm/php.ini\
     && sudo sed -i '/display_errors.*=/c display_errors=On' /etc/php/7.0/fpm/php.ini\
     && sudo sed -i '/[^#]root.*www/c root /home/liuhao/www;' /etc/nginx/sites-available/default\
