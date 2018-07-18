@@ -24,29 +24,36 @@ RUN  echo "deb http://cn.archive.ubuntu.com/ubuntu/ xenial main restricted unive
     && bash -c '/bin/echo -e "sss\nsss\n\n\n\n\n\n\n" | adduser liuhao'\
     && chmod u+w /etc/sudoers && sed -i '/root/a liuhao  ALL=(ALL:ALL) NOPASSWD: ALL' /etc/sudoers && chmod u-w /etc/sudoers
 USER liuhao
-WORKDIR /home/liuhao
+WORKDIR /home/liuhao/download
 ENV APP_PATH /home/liuhao/applications
 RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
-# 下载软件
+# 下载软件(一次性下载,否则后面会下载出错)
     && wget http://nginx.org/download/nginx-1.14.0.tar.gz\
     && wget http://cn2.php.net/distributions/php-7.0.30.tar.gz\
     && wget http://pecl.php.net/get/yaf-3.0.7.tgz\
     && wget http://pecl.php.net/get/swoole-4.0.1.tgz\
     && wget http://pecl.php.net/get/redis-4.1.0.tgz\
     && wget http://download.redis.io/releases/redis-4.0.10.tar.gz\
-    && wget https://cdn.mysql.com//archives/mysql-5.7/mysql-5.7.10.tar.gz\
+    && wget https://cdn.mysql.com/archives/mysql-5.7/mysql-5.7.10.tar.gz\
 #nginx
     # && wget http://nginx.org/download/nginx-1.14.0.tar.gz\
     && tar -zxf ./nginx-1.14.0.tar.gz && cd nginx-1.14.0/\
-    && ./configure --with-cc-opt='-g -O2 -fPIE -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -fPIE -pie -Wl,-z,relro -Wl,-z,now' --prefix=$APP_PATH/nginx --conf-path=$APP_PATH/nginx/conf/nginx.conf --http-log-path=log/access.log --error-log-path=log/error.log --lock-path=$APP_PATH/nginx/lock/nginx.lock --pid-path=$APP_PATH/nginx/nginx.pid --http-client-body-temp-path=$APP_PATH/nginx/body --http-fastcgi-temp-path=$APP_PATH/nginx/fastcgi --http-proxy-temp-path=$APP_PATH/nginx/proxy --http-scgi-temp-path=$APP_PATH/nginx/scgi --http-uwsgi-temp-path=$APP_PATH/nginx/uwsgi --with-debug --with-pcre-jit --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_addition_module --with-http_dav_module --with-http_geoip_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_image_filter_module --with-http_v2_module --with-http_sub_module --with-http_xslt_module --with-stream --with-stream_ssl_module --with-mail --with-mail_ssl_module --with-threads\
+    && ./configure --with-cc-opt='-g -O2 -fPIE -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -fPIE -pie -Wl,-z,relro -Wl,-z,now' --prefix=$APP_PATH/nginx --conf-path=$APP_PATH/nginx/etc/nginx.conf --http-log-path=log/access.log --error-log-path=log/error.log --lock-path=$APP_PATH/nginx/lock/nginx.lock --pid-path=$APP_PATH/nginx/nginx.pid --http-client-body-temp-path=$APP_PATH/nginx/body --http-fastcgi-temp-path=$APP_PATH/nginx/fastcgi --http-proxy-temp-path=$APP_PATH/nginx/proxy --http-scgi-temp-path=$APP_PATH/nginx/scgi --http-uwsgi-temp-path=$APP_PATH/nginx/uwsgi --with-debug --with-pcre-jit --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_addition_module --with-http_dav_module --with-http_geoip_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_image_filter_module --with-http_v2_module --with-http_sub_module --with-http_xslt_module --with-stream --with-stream_ssl_module --with-mail --with-mail_ssl_module --with-threads\
     && make && make install\
+    && sed -i '/#user  nobody;/c user  liuhao;' $APP_PATH/nginx/etc/nginx.conf\
+    && sed -i "77a include ${APP_PATH}/nginx/conf.d/*.conf;" $APP_PATH/nginx/etc/nginx.conf\
+    # 将这几行中的#注释全部替换掉
+    && sed -i '65,71s/#/ /' $APP_PATH/nginx/etc/nginx.conf\
+    && mkdir $APP_PATH/nginx/conf.d\
     && cd ../\
 # PHP
     # && wget http://cn2.php.net/distributions/php-7.0.30.tar.gz\
     && tar -zxf ./php-7.0.30.tar.gz && cd php-7.0.30\
     && ./configure --prefix=$APP_PATH/php --with-config-file-path=$APP_PATH/php/etc --enable-fpm --with-fpm-user=liuhao --with-fpm-group=liuhao --with-mysqli --with-pdo-mysql --with-iconv-dir --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-inline-optimization --with-curl --enable-mbregex --enable-mbstring --with-mcrypt --enable-ftp --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --without-pear --with-gettext --disable-fileinfo --enable-maintainer-zts --enable-opcache --enable-exif --enable-dba  --enable-calendar --enable-sysvmsg  --enable-sysvsem --enable-sysvshm --enable-wddx --enable-phpdbg --with-bz2=/usr --with-snmp=/usr --with-tidy=/usr --with-readline=/usr --with-pdo-pgsql=/usr\
-    && mkdir -p $APP_PATH/php/etc/ && cp ./php.ini-development $APP_PATH/php/etc/php.ini\
     && make && make install\
+    && mkdir -p $APP_PATH/php/etc/ && cp ./php.ini-development $APP_PATH/php/etc/php.ini\
+    && cp $APP_PATH/php/etc/php-fpm.conf.default $APP_PATH/php/etc/php-fpm.conf\
+    && cp $APP_PATH/php/etc/php-fpm.d/www.conf.default $APP_PATH/php/etc/php-fpm.d/www.conf\
     && cd ../\
     # redis扩展
     # && wget http://pecl.php.net/get/redis-4.1.0.tgz\
@@ -81,5 +88,31 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     && mkdir -p $APP_PATH/redis/etc && cp ./redis.conf $APP_PATH/redis/etc/redis.conf\
     && cd ../\
 # Mysql5.7
+    # mysql5.7必须依赖
+    && apt-get install python-dev gccxml libbz2-dev\
+    && wget -c http://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz\
+    && tar -zvxf boost_1_59_0.tar.gz\
+    && cd boost_1_59_0/\
+    && ./bootstrap.sh\
+    && ./bjam --prefix==./prefix/install\
+    && ./b2 install\
     # && wget https://cdn.mysql.com//archives/mysql-5.7/mysql-5.7.10.tar.gz\
-	&& tar -zxf ./mysql-5.7.10.tar.gz && cd ./mysql-5.7.10
+	&& tar -zxf ./mysql-5.7.10.tar.gz && cd ./mysql-5.7.10\
+    && apt-get install cmake bison libncurses5-dev\
+    && cmake \
+    && -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+    && -DMYSQL_DATADIR=/usr/local/mysql/data \
+    && -DSYSCONFDIR=/etc \
+    && -DWITH_MYISAM_STORAGE_ENGINE=1 \
+    && -DWITH_INNOBASE_STORAGE_ENGINE=1 \
+    && -DWITH_MEMORY_STORAGE_ENGINE=1 \
+    && -DWITH_READLINE=1 \
+    && -DMYSQL_UNIX_ADDR=/usr/local/mysql/mysql.sock \
+    && -DMYSQL_TCP_PORT=3306 \
+    && -DMYSQL_USER=mysql \
+    && -DENABLED_LOCAL_INFILE=1 \
+    && -DWITH_PARTITION_STORAGE_ENGINE=1 \
+    && -DEXTRA_CHARSETS=all \
+    && -DDEFAULT_CHARSET=utf8 \
+    && -DDEFAULT_COLLATION=utf8_general_ci \
+    && -DWITH_BOOST=<boost-dir>

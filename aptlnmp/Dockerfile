@@ -20,7 +20,7 @@ RUN sudo apt-get install -y git\
 # Nginx 配置文件路径/etc/nginx/conf.d
  	&& sudo apt-get -y install nginx\
 # PHP环境软件 配置文件路径/etc/php/7.0/cli/php.ini /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php-fpm.conf
-	&& sudo apt-get -y install php7.0 php7.0-curl php7.0-gd php7.0-dev php7.0-mbstring php7.0-opcache php7.0-zip\
+	&& sudo apt-get -y install php7.0 php7.0-curl php7.0-gd php7.0-dev php7.0-mbstring php7.0-opcache php7.0-zip php7.0-mysql\
 	&& wget http://pecl.php.net/get/yaf-3.0.7.tgz\
 	&& wget http://pecl.php.net/get/swoole-4.0.1.tgz\
     && wget http://pecl.php.net/get/redis-4.1.0.tgz\
