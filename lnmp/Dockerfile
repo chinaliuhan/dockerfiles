@@ -97,14 +97,14 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
 # Mysql5.7
     # MySQL5.7必须依赖
     && sudo apt-get -y install python-dev gccxml libbz2-dev\
-    && wget -c http://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz\
+    #&& wget -c http://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz\
     && tar -zvxf boost_1_59_0.tar.gz\
     && cd boost_1_59_0/\
     && ./bootstrap.sh\
     && ./bjam --prefix==./prefix/install\
     && ./b2 install\
     && cd ../\
-    && wget https://cdn.mysql.com//archives/mysql-5.7/mysql-5.7.10.tar.gz >> /dev/null \
+    #&& wget https://cdn.mysql.com//archives/mysql-5.7/mysql-5.7.10.tar.gz >> /dev/null \
 	&& tar -zxf ./mysql-5.7.10.tar.gz && cd ./mysql-5.7.10 \
     && sudo apt-get -y install cmake bison libncurses5-dev \
     && cmake \
@@ -126,4 +126,5 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     -DWITH_BOOST=../boost_1_59_0\
     # 这里如果make -j4启动4个gcc会导致内存消耗过大,产生make[2]: *** [libmysqld/CMakeFiles/sql_embedded.dir/__/sql/item_geofunc.cc.o] Error 4 错误
     && make && make install\
-    && sudo sed -i '/bind-address/c bind-address		= 0.0.0.0' $APP_PATH/mysql/etc/conf.d/mysql.cnf
+    # 这里提示目录不存在
+    #&& sudo sed -i '/bind-address/c bind-address		= 0.0.0.0' $APP_PATH/mysql/etc/conf.d/mysql.cnf
