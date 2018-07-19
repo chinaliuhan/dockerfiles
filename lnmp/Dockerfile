@@ -42,8 +42,10 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     && make && make install\
     && sed -i '/#user  nobody;/c user  liuhao;' $APP_PATH/nginx/etc/nginx.conf\
     && sed -i "77a include ${APP_PATH}/nginx/conf.d/*.conf;" $APP_PATH/nginx/etc/nginx.conf\
-    # 将这几行中的#注释全部替换掉
+    # 将这几行中的#注释全部替换掉,里面是关于PHP的server
     && sed -i '65,71s/#/ /' $APP_PATH/nginx/etc/nginx.conf\
+    && sudo sed -i '21a autoindex on;' $APP_PATH/nginx/etc/nginx.conf\
+    && sudo sed -i '21a autoindex_localtime on;' $APP_PATH/nginx/etc/nginx.conf\
     && mkdir $APP_PATH/nginx/conf.d\
     && cd ../\
 # PHP
@@ -86,6 +88,7 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     && sed -i "/dir .\//c dir $APP_PATH/redis/data" ./redis.conf\
     && mkdir -p $APP_PATH/redis/data\
     && mkdir -p $APP_PATH/redis/etc && cp ./redis.conf $APP_PATH/redis/etc/redis.conf\
+    && sudo sed -i '/bind 127.0.0.1/c bind 0.0.0.0' $APP_PATH/redis/etc/redis.conf\
     && cd ../\
 # Mysql5.7
     # mysql5.7必须依赖
@@ -102,7 +105,7 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     && cmake \
     && -DCMAKE_INSTALL_PREFIX=$APP_PATH/mysql \
     && -DMYSQL_DATADIR=$APP_PATH/mysql/data \
-    && -DSYSCONFDIR=/etc \
+    && -DSYSCONFDIR=$APP_PATH/mysql/etc \
     && -DWITH_MYISAM_STORAGE_ENGINE=1 \
     && -DWITH_INNOBASE_STORAGE_ENGINE=1 \
     && -DWITH_MEMORY_STORAGE_ENGINE=1 \
@@ -115,4 +118,6 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     && -DEXTRA_CHARSETS=all \
     && -DDEFAULT_CHARSET=utf8 \
     && -DDEFAULT_COLLATION=utf8_general_ci \
-    && -DWITH_BOOST=../boost_1_59_0
+    && -DWITH_BOOST=../boost_1_59_0\
+    && make && make install\
+    && sudo sed -i '/bind-address/c bind-address		= 0.0.0.0' $APP_PATH/mysql/etc/conf.d/mysql.cnf
