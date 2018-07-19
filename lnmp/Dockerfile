@@ -100,14 +100,14 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
 	&& tar -zxf ./mysql-5.7.10.tar.gz && cd ./mysql-5.7.10\
     && apt-get install cmake bison libncurses5-dev\
     && cmake \
-    && -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
-    && -DMYSQL_DATADIR=/usr/local/mysql/data \
+    && -DCMAKE_INSTALL_PREFIX=$APP_PATH/mysql \
+    && -DMYSQL_DATADIR=$APP_PATH/mysql/data \
     && -DSYSCONFDIR=/etc \
     && -DWITH_MYISAM_STORAGE_ENGINE=1 \
     && -DWITH_INNOBASE_STORAGE_ENGINE=1 \
     && -DWITH_MEMORY_STORAGE_ENGINE=1 \
     && -DWITH_READLINE=1 \
-    && -DMYSQL_UNIX_ADDR=/usr/local/mysql/mysql.sock \
+    && -DMYSQL_UNIX_ADDR=$APP_PATH/mysql/mysql.sock \
     && -DMYSQL_TCP_PORT=3306 \
     && -DMYSQL_USER=mysql \
     && -DENABLED_LOCAL_INFILE=1 \
@@ -115,4 +115,4 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     && -DEXTRA_CHARSETS=all \
     && -DDEFAULT_CHARSET=utf8 \
     && -DDEFAULT_COLLATION=utf8_general_ci \
-    && -DWITH_BOOST=<boost-dir>
+    && -DWITH_BOOST=../boost_1_59_0
