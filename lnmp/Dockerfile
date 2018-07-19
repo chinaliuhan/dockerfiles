@@ -96,7 +96,7 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     && cd ../\
 # Mysql5.7
     # MySQL5.7必须依赖
-    && sudo apt-get install python-dev gccxml libbz2-dev\
+    && sudo apt-get -y install python-dev gccxml libbz2-dev\
     && wget -c http://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz\
     && tar -zvxf boost_1_59_0.tar.gz\
     && cd boost_1_59_0/\
@@ -107,7 +107,7 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     # 安装MySQL5.7
     && wget https://cdn.mysql.com//archives/mysql-5.7/mysql-5.7.10.tar.gz\
 	&& tar -zxf ./mysql-5.7.10.tar.gz && cd ./mysql-5.7.10\
-    && sudo apt-get install cmake bison libncurses5-dev\
+    && sudo apt-get -y install cmake bison libncurses5-dev\
     && cmake \
     -DCMAKE_INSTALL_PREFIX=$APP_PATH/mysql \
     -DMYSQL_DATADIR=$APP_PATH/mysql/data \
