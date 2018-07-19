@@ -1,15 +1,15 @@
 FROM ubuntu:16.04
-RUN  echo "deb http://cn.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse" > /etc/apt/sources.list \
-    && echo "deb http://cn.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse" >> /etc/apt/sources.list \
-    && echo "deb http://cn.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse" >> /etc/apt/sources.list \
-    && echo "deb http://cn.archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse" >> /etc/apt/sources.list \
-    && echo "deb http://cn.archive.ubuntu.com/ubuntu/ xenial-proposed main restricted universe multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://cn.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://cn.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://cn.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://cn.archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://cn.archive.ubuntu.com/ubuntu/ xenial-proposed main restricted universe multiverse" >> /etc/apt/sources.list \
-    && apt-get -y clean \
+RUN  echo "deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse"  > /etc/apt/sources.list \
+    && echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse" >> /etc/apt/sources.list \
+    && echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse" >> /etc/apt/sources.list \
+    && echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse" >> /etc/apt/sources.list \
+    && echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse" >> /etc/apt/sources.list \
+    && echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse" >> /etc/apt/sources.list \
+    && echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse" >> /etc/apt/sources.list \
+    && echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse" >> /etc/apt/sources.list \
+    && echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse" >> /etc/apt/sources.list \
+    && echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse" >> /etc/apt/sources.list \
+    && apt-get -y clean && apt-get -y autoclean \
     && apt-get -y update \
     && apt-get -y install sudo git vim curl wget net-tools iputils-ping\
     && bash -c '/bin/echo -e "sss\nsss\n\n\n\n\ny\n" | adduser liuhao'\
@@ -24,6 +24,15 @@ RUN sudo apt-get install -y git\
 	&& wget http://pecl.php.net/get/yaf-3.0.7.tgz\
 	&& wget http://pecl.php.net/get/swoole-4.0.1.tgz\
     && wget http://pecl.php.net/get/redis-4.1.0.tgz\
+    && tar -zxf ./redis-4.1.0.tgz\
+    && cd redis-4.1.0 && phpize\
+    && ./configure --with-php-config=/usr/bin/php-config\
+    && make && sudo make install\
+    && sudo bash -c "echo 'extension=redis.so' > /etc/php/7.0/mods-available/redis.ini"\
+	&& sudo ln -s /etc/php/7.0/mods-available/redis.ini /etc/php/7.0/cli/conf.d/\
+	&& sudo ln -s /etc/php/7.0/mods-available/redis.ini /etc/php/7.0/fpm/conf.d/\
+    && cd ../\
+    && rm -rf ./redis*\
 	&& tar -zxf ./yaf-3.0.7.tgz\
 	&& cd yaf-3.0.7 && phpize\
 	&& ./configure --with-php-config=/usr/bin/php-config\
@@ -32,6 +41,7 @@ RUN sudo apt-get install -y git\
 	&& sudo ln -s /etc/php/7.0/mods-available/yaf.ini /etc/php/7.0/cli/conf.d/\
 	&& sudo ln -s /etc/php/7.0/mods-available/yaf.ini /etc/php/7.0/fpm/conf.d/\
     && cd ../\
+    && rm -rf ./yaf*\
 	&& tar -zxf ./swoole-4.0.1.tgz\
 	&& cd swoole-4.0.1 && phpize\
 	&& ./configure --with-php-config=/usr/bin/php-config\
@@ -40,18 +50,12 @@ RUN sudo apt-get install -y git\
 	&& sudo ln -s /etc/php/7.0/mods-available/swoole.ini /etc/php/7.0/cli/conf.d/\
 	&& sudo ln -s /etc/php/7.0/mods-available/swoole.ini /etc/php/7.0/fpm/conf.d/\
     && cd ../\
-    && tar -zxf ./redis-4.1.0.tgz\
-    && cd redis-4.1.0 && phpize\
-    && ./configure --with-php-config=/usr/bin/php-config\
-    && make && make install\
-    && sudo bash -c "echo 'extension=redis.so' > /etc/php/7.0/mods-available/redis.ini"\
-	&& sudo ln -s /etc/php/7.0/mods-available/redis.ini /etc/php/7.0/cli/conf.d/\
-	&& sudo ln -s /etc/php/7.0/mods-available/redis.ini /etc/php/7.0/fpm/conf.d/\
-    && cd ../\
+    && rm -rf ./swoole*\
 # Redis因为高版本才能读取低版本的dump.rdb文件
 	&& sudo apt-get -y install redis-server\
 # Mysql5.7
 	&& sudo apt-get -y install mysql-server-5.7\
+    && sudo apt-get -y clean && sudo apt-get -y autoclean\
 # 修改配置文件
     && sudo sed -i '/^short_open_tag.*=/c short_open_tag = On' /etc/php/7.0/fpm/php.ini\
     && sudo sed -i '/^short_open_tag.*=/c short_open_tag = On' /etc/php/7.0/cli/php.ini\
