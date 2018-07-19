@@ -66,6 +66,23 @@ RUN sudo apt-get install -y git\
     && sudo sed -i '21a autoindex_localtime on;' /etc/nginx/nginx.conf\
     && sudo sed -i '/bind 127.0.0.1/c bind 0.0.0.0' /etc/redis/redis.conf\
     && sudo sed -i '/bind-address/c bind-address		= 0.0.0.0' /etc/mysql/mysql.conf.d/mysqld.cnf\
+# 准备脚本文件
+    && echo "#! /bin/bash" >> $HOME/init.sh \
+    && echo "sudo service nginx start" >> $HOME/init.sh \
+    && echo "sudo service mysql start" >> $HOME/init.sh \
+    && echo "sudo service redis-server start" >> $HOME/init.sh \
+    && echo "sudo service php7.0-fpm start" >> $HOME/init.sh \
     # 指定MySQL挂载目录, 这个版本的MySQL有这个问题,要不然会无法启动,提示,如果目录不存在需要加上-s命令
-    && sudo usermod -d /var/lib/mysql/ mysql\
-    && echo "UPDATE mysql.user SET host='%' where user='root'; flush privileges;" | mysql -uroot -psss\
+    && echo "sudo usermod -d /var/lib/mysql/ mysql" >> $HOME/init.sh \
+    && echo 'echo "UPDATE mysql.user SET host=\"%\" where user=\"root\"; flush privileges;" | mysql -uroot -psss' >> $HOME/init.sh \
+    && echo "#! /bin/bash" >> $HOME/restart.sh\
+    && echo "sudo service nginx restart" >> $HOME/restart.sh\
+    && echo "sudo service mysql restart" >> $HOME/restart.sh\
+    && echo "sudo service redis-server restart" >> $HOME/restart.sh\
+    && echo "sudo service php7.0-fpm restart" >> $HOME/restart.sh\
+    && echo "#! /bin/bash" >> $HOME/stop.sh\
+    && echo "sudo service nginx stop" >> $HOME/stop.sh\
+    && echo "sudo service mysql stop" >> $HOME/stop.sh\
+    && echo "sudo service redis-server stop" >> $HOME/stop.sh\
+    && echo "sudo service php7.0-fpm stop" >> $HOME/stop.sh\
+CMD $HOME/init.sh
