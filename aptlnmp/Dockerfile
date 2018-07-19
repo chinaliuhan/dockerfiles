@@ -11,12 +11,12 @@ RUN  echo "deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe
     && echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse" >> /etc/apt/sources.list \
     && apt-get -y clean && apt-get -y autoclean \
     && apt-get -y update \
-    && apt-get -y install sudo git vim curl wget net-tools iputils-ping\
+    && apt-get -y install sudo\
     && bash -c '/bin/echo -e "sss\nsss\n\n\n\n\ny\n" | adduser liuhao'\
     && chmod u+w /etc/sudoers && sed -i '/root/a liuhao  ALL=(ALL:ALL) NOPASSWD: ALL' /etc/sudoers && chmod u-w /etc/sudoers
 USER liuhao
 WORKDIR /home/liuhao
-RUN sudo apt-get install -y git\
+RUN sudo apt-get install -y git vim curl wget net-tools iputils-ping\
 # Nginx 配置文件路径/etc/nginx/conf.d
  	&& sudo apt-get -y install nginx\
 # PHP环境软件 配置文件路径/etc/php/7.0/cli/php.ini /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php-fpm.conf
@@ -54,7 +54,10 @@ RUN sudo apt-get install -y git\
 # Redis因为高版本才能读取低版本的dump.rdb文件
 	&& sudo apt-get -y install redis-server\
 # Mysql5.7
+    && echo "mysql-server-5.5 mysql-server/root_password password sss" | debconf-set-selections\
+    && echo "mysql-server-5.5 mysql-server/root_password_again password sss" | debconf-set-selections\
 	&& sudo apt-get -y install mysql-server-5.7\
+# 清空下载
     && sudo apt-get -y clean && sudo apt-get -y autoclean\
 # 修改配置文件
     && sudo sed -i '/^short_open_tag.*=/c short_open_tag = On' /etc/php/7.0/fpm/php.ini\
