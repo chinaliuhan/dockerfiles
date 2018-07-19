@@ -28,13 +28,13 @@ WORKDIR /home/liuhao/download
 ENV APP_PATH /home/liuhao/applications
 RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
 # 下载软件(一次性下载,否则后面会下载出错)
+    && wget https://cdn.mysql.com/archives/mysql-5.7/mysql-5.7.10.tar.gz\
     && wget http://nginx.org/download/nginx-1.14.0.tar.gz\
     && wget http://cn2.php.net/distributions/php-7.0.30.tar.gz\
     && wget http://pecl.php.net/get/yaf-3.0.7.tgz\
     && wget http://pecl.php.net/get/swoole-4.0.1.tgz\
     && wget http://pecl.php.net/get/redis-4.1.0.tgz\
     && wget http://download.redis.io/releases/redis-4.0.10.tar.gz\
-    && wget https://cdn.mysql.com/archives/mysql-5.7/mysql-5.7.10.tar.gz\
 #nginx
     # && wget http://nginx.org/download/nginx-1.14.0.tar.gz\
     && tar -zxf ./nginx-1.14.0.tar.gz && cd nginx-1.14.0/\
@@ -104,10 +104,9 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     && ./bjam --prefix==./prefix/install\
     && ./b2 install\
     && cd ../\
-    # 安装MySQL5.7
-    && wget https://cdn.mysql.com//archives/mysql-5.7/mysql-5.7.10.tar.gz\
-	&& tar -zxf ./mysql-5.7.10.tar.gz && cd ./mysql-5.7.10\
-    && sudo apt-get -y install cmake bison libncurses5-dev\
+    && wget https://cdn.mysql.com//archives/mysql-5.7/mysql-5.7.10.tar.gz >> /dev/null \
+	&& tar -zxf ./mysql-5.7.10.tar.gz && cd ./mysql-5.7.10 \
+    && sudo apt-get -y install cmake bison libncurses5-dev \
     && cmake \
     -DCMAKE_INSTALL_PREFIX=$APP_PATH/mysql \
     -DMYSQL_DATADIR=$APP_PATH/mysql/data \
@@ -125,5 +124,6 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     -DDEFAULT_CHARSET=utf8 \
     -DDEFAULT_COLLATION=utf8_general_ci \
     -DWITH_BOOST=../boost_1_59_0\
-    && make -j4 && make install\
+    # 这里如果make -j4启动4个gcc会导致内存消耗过大,产生make[2]: *** [libmysqld/CMakeFiles/sql_embedded.dir/__/sql/item_geofunc.cc.o] Error 4 错误
+    && make && make install\
     && sudo sed -i '/bind-address/c bind-address		= 0.0.0.0' $APP_PATH/mysql/etc/conf.d/mysql.cnf
