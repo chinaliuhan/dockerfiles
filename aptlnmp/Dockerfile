@@ -9,7 +9,7 @@ RUN  echo "deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe
     && echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse" >> /etc/apt/sources.list \
     && echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse" >> /etc/apt/sources.list \
     && echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse" >> /etc/apt/sources.list \
-    && apt-get -y clean && apt-get -y autoclean \
+    && apt-get -y clean\
     && apt-get -y update \
     && apt-get -y install sudo\
     && bash -c '/bin/echo -e "sss\nsss\n\n\n\n\ny\n" | adduser liuhao'\
@@ -58,7 +58,7 @@ RUN sudo apt-get install -y git vim curl wget net-tools iputils-ping\
     && echo "mysql-server-5.5 mysql-server/root_password_again password sss" | sudo debconf-set-selections\
 	&& sudo apt-get -y install mysql-server-5.7\
 # 清空下载
-    && sudo apt-get -y clean && sudo apt-get -y autoclean\
+    && sudo apt-get -y clean\
 # 修改配置文件
     && sudo sed -i '/^short_open_tag.*=/c short_open_tag = On' /etc/php/7.0/fpm/php.ini\
     && sudo sed -i '/^short_open_tag.*=/c short_open_tag = On' /etc/php/7.0/cli/php.ini\
