@@ -91,5 +91,5 @@ RUN sudo apt-get install -y git vim curl wget net-tools iputils-ping\
     && echo "sudo service nginx stop" >> $HOME/stop.sh\
     && echo "sudo service mysql stop" >> $HOME/stop.sh\
     && echo "sudo service redis-server stop" >> $HOME/stop.sh\
-    && echo "sudo service php7.0-fpm stop" >> $HOME/stop.sh\
+    && echo "sudo service php7.0-fpm stop" >> $HOME/stop.sh
 CMD $HOME/init.sh
