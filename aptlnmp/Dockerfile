@@ -113,6 +113,7 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     # 指定MySQL挂载目录, 这个版本的MySQL有这个问题,要不然会无法启动,提示,如果目录不存在需要加上-s命令
     && sudo usermod -d /var/lib/mysql/ mysql\
     # 其实权限是已经有的, 但是就是不要用必须要在运行一次, 而且直接在dockerfile中也不行,必须在系统中运行,,,所以我放到了下面的init.sh中
+    # 如果不给权限的话,运行mysql的时候会提示没有user表.没有private表...之类的
     # && sudo mkdir /var/run/mysqld && sudo chown -R mysql:mysql /var/lib/mysql /var/run/mysqld\
 # 清空下载
     && sudo apt-get -y clean\
