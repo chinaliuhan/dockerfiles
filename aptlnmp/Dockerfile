@@ -112,6 +112,8 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo sed -i '/bind-address/c bind-address		= 0.0.0.0' /etc/mysql/mysql.conf.d/mysqld.cnf\
     # 指定MySQL挂载目录, 这个版本的MySQL有这个问题,要不然会无法启动,提示,如果目录不存在需要加上-s命令
     && sudo usermod -d /var/lib/mysql/ mysql\
+    # 其实权限是已经有的, 但是就是不要用必须要在运行一次, 而且直接在dockerfile中也不行,必须在系统中运行,,,所以我放到了下面的init.sh中
+    # && sudo mkdir /var/run/mysqld && sudo chown -R mysql:mysql /var/lib/mysql /var/run/mysqld\
 # 清空下载
     && sudo apt-get -y clean\
 # 准备脚本文件
@@ -120,7 +122,7 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && echo "sudo service mysql start" >> $HOME/init.sh \
     && echo "sudo service redis-server start" >> $HOME/init.sh \
     && echo "sudo service php7.0-fpm start" >> $HOME/init.sh \
-    && echo "sudo usermod -d /var/lib/mysql/ mysql" >> $HOME/init.sh \
+    && echo "chown -R mysql:mysql /var/lib/mysql /var/run/mysqld" >> $HOME/init.sh\
     && echo 'echo "UPDATE mysql.user SET host=\"%\" where user=\"root\"; flush privileges;" | mysql -uroot -psss' >> $HOME/init.sh \
     && echo "#! /bin/bash" >> $HOME/restart.sh\
     && echo "sudo service nginx restart" >> $HOME/restart.sh\
