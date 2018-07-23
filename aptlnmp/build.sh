@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t myaptlnmp_test -f ./Dockerfile .
+docker build -t myaptlnmp -f ./Dockerfile .
