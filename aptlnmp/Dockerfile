@@ -23,6 +23,7 @@ RUN apt-get -y clean\
     && chmod u+w /etc/sudoers && sed -i '/root/a liuhao  ALL=(ALL:ALL) NOPASSWD: ALL' /etc/sudoers && chmod u-w /etc/sudoers
 USER liuhao
 WORKDIR /home/liuhao
+ENV WWW /home/liuhao/www
 RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set encoding=utf-8\n:set shiftwidth=4\n:set ai\n:set ruler\n:set helplang=cn\n:set hlsearch\n:set cursorline\n:set laststatus=2" > $HOME/.vimrc\
 # Nginx 
     # 这里指定安装的版本源自上面添加的NGINX官方源,官方源下载速度很慢而且需要手动添加源证书,
@@ -42,7 +43,7 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo bash -c "echo 'index index.html index.htm index.php index.phtml;' >> /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo bash -c "echo 'client_max_body_size 100m;' >> /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo bash -c "echo -e \"\n\" >> /etc/nginx/conf.d/lh.localhost.conf"\
-    && sudo bash -c "echo 'set \$public_root /home/liuhao/www;' >> /etc/nginx/conf.d/lh.localhost.conf"\
+    && sudo bash -c "echo 'set \$public_root ${WWW};' >> /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo bash -c "echo 'root \$public_root;' >> /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo bash -c "echo -e \"\n\" >> /etc/nginx/conf.d/lh.localhost.conf"\
     # 这里的!无法屏蔽,使用会被当做系统变量用或者存在和\!输出.所以干脆将\!输出了,后面在用sed替换掉
@@ -122,20 +123,20 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
 # 清空下载
     && sudo apt-get -y clean\
 # 准备脚本文件
-    && echo "#! /bin/bash" >> $HOME/init.sh \
-    && echo "sudo service nginx start" >> $HOME/init.sh \
-    && echo "sudo service mysql start" >> $HOME/init.sh \
-    && echo "sudo service redis-server start" >> $HOME/init.sh \
-    && echo "sudo service php7.0-fpm start" >> $HOME/init.sh \
-    && echo "sudo chown -R mysql:mysql /var/lib/mysql /var/run/mysqld" >> $HOME/init.sh\
-    && echo 'echo "UPDATE mysql.user SET host=\"%\" where user=\"root\"; flush privileges;" | mysql -uroot -psss' >> $HOME/init.sh \
-    && echo "#! /bin/bash" >> $HOME/restart.sh\
-    && echo "sudo service nginx restart" >> $HOME/restart.sh\
-    && echo "sudo service mysql restart" >> $HOME/restart.sh\
-    && echo "sudo service redis-server restart" >> $HOME/restart.sh\
-    && echo "sudo service php7.0-fpm restart" >> $HOME/restart.sh\
-    && echo "#! /bin/bash" >> $HOME/stop.sh\
-    && echo "sudo service nginx stop" >> $HOME/stop.sh\
-    && echo "sudo service mysql stop" >> $HOME/stop.sh\
-    && echo "sudo service redis-server stop" >> $HOME/stop.sh\
-    && echo "sudo service php7.0-fpm stop" >> $HOME/stop.sh
+    && echo "#! /bin/bash" >> $HOME/shell/init.sh \
+    && echo "sudo service nginx start" >> $HOME/shell/init.sh \
+    && echo "sudo service mysql start" >> $HOME/shell/init.sh \
+    && echo "sudo service redis-server start" >> $HOME/shell/init.sh \
+    && echo "sudo service php7.0-fpm start" >> $HOME/shell/init.sh \
+    && echo "sudo chown -R mysql:mysql /var/lib/mysql /var/run/mysqld" >> $HOME/shell/init.sh\
+    && echo 'echo "UPDATE mysql.user SET host=\"%\" where user=\"root\"; flush privileges;" | mysql -uroot -psss' >> $HOME/shell/init.sh \
+    && echo "#! /bin/bash" >> $HOME/shell/restart.sh\
+    && echo "sudo service nginx restart" >> $HOME/shell/restart.sh\
+    && echo "sudo service mysql restart" >> $HOME/shell/restart.sh\
+    && echo "sudo service redis-server restart" >> $HOME/shell/restart.sh\
+    && echo "sudo service php7.0-fpm restart" >> $HOME/shell/restart.sh\
+    && echo "#! /bin/bash" >> $HOME/shell/stop.sh\
+    && echo "sudo service nginx stop" >> $HOME/shell/stop.sh\
+    && echo "sudo service mysql stop" >> $HOME/shell/stop.sh\
+    && echo "sudo service redis-server stop" >> $HOME/shell/stop.sh\
+    && echo "sudo service php7.0-fpm stop" >> $HOME/shell/stop.sh
