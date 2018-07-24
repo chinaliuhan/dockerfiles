@@ -123,20 +123,20 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
 # 清空下载
     && sudo apt-get -y clean\
 # 准备脚本文件
-    && echo "#! /bin/bash" >> $HOME/shell/init.sh \
-    && echo "sudo service nginx start" >> $HOME/shell/init.sh \
-    && echo "sudo service mysql start" >> $HOME/shell/init.sh \
-    && echo "sudo service redis-server start" >> $HOME/shell/init.sh \
-    && echo "sudo service php7.0-fpm start" >> $HOME/shell/init.sh \
-    && echo "sudo chown -R mysql:mysql /var/lib/mysql /var/run/mysqld" >> $HOME/shell/init.sh\
-    && echo 'echo "UPDATE mysql.user SET host=\"%\" where user=\"root\"; flush privileges;" | mysql -uroot -psss' >> $HOME/shell/init.sh \
-    && echo "#! /bin/bash" >> $HOME/shell/restart.sh\
-    && echo "sudo service nginx restart" >> $HOME/shell/restart.sh\
-    && echo "sudo service mysql restart" >> $HOME/shell/restart.sh\
-    && echo "sudo service redis-server restart" >> $HOME/shell/restart.sh\
-    && echo "sudo service php7.0-fpm restart" >> $HOME/shell/restart.sh\
-    && echo "#! /bin/bash" >> $HOME/shell/stop.sh\
-    && echo "sudo service nginx stop" >> $HOME/shell/stop.sh\
-    && echo "sudo service mysql stop" >> $HOME/shell/stop.sh\
-    && echo "sudo service redis-server stop" >> $HOME/shell/stop.sh\
-    && echo "sudo service php7.0-fpm stop" >> $HOME/shell/stop.sh
+    && echo "#! /bin/bash" >> $HOME/init.sh \
+    && echo "sudo service nginx start" >> $HOME/init.sh \
+    && echo "sudo service mysql start" >> $HOME/init.sh \
+    && echo "sudo service redis-server start" >> $HOME/init.sh \
+    && echo "sudo service php7.0-fpm start" >> $HOME/init.sh \
+    && echo "sudo chown -R mysql:mysql /var/lib/mysql /var/run/mysqld" >> $HOME/init.sh\
+    && echo 'echo "UPDATE mysql.user SET host=\"%\" where user=\"root\"; flush privileges;" | mysql -uroot -psss' >> $HOME/init.sh \
+    && echo "#! /bin/bash" >> $HOME/restart.sh\
+    && echo "sudo service nginx restart" >> $HOME/restart.sh\
+    && echo "sudo service mysql restart" >> $HOME/restart.sh\
+    && echo "sudo service redis-server restart" >> $HOME/restart.sh\
+    && echo "sudo service php7.0-fpm restart" >> $HOME/restart.sh\
+    && echo "#! /bin/bash" >> $HOME/stop.sh\
+    && echo "sudo service nginx stop" >> $HOME/stop.sh\
+    && echo "sudo service mysql stop" >> $HOME/stop.sh\
+    && echo "sudo service redis-server stop" >> $HOME/stop.sh\
+    && echo "sudo service php7.0-fpm stop" >> $HOME/stop.sh
