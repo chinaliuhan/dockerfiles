@@ -102,6 +102,8 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo sed -i '/^;error_log.*=.*php_errors.log/c error_log=/var/log/php_errors.log' /etc/php/7.0/cli/php.ini\
     && sudo sed -i '/^user\s=\s\w\+/c user = liuhao' /etc/php/7.0/fpm/pool.d/www.conf\
     && sudo sed -i '/^group\s=\s\w\+/c group = liuhao' /etc/php/7.0/fpm/pool.d/www.conf\
+    && sudo sed -i '/^listen.owner\s=\s\w\+/c listen.owner = liuhao' /etc/php/7.0/fpm/pool.d/www.conf\
+    && sudo sed -i '/^listen.group\s=\s\w\+/c listen.group = liuhao' /etc/php/7.0/fpm/pool.d/www.conf\
 # Redis因为高版本才能读取低版本的dump.rdb文件
 	&& sudo apt-get -y install redis-server\
     && sudo sed -i '/bind 127.0.0.1/c bind 0.0.0.0' /etc/redis/redis.conf\
