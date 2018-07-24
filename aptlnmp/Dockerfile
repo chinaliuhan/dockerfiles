@@ -12,7 +12,7 @@ RUN apt-get -y clean\
     && echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse" >> /etc/apt/sources.list \
     && apt-get -y update \
     && apt-get -y install sudo git vim curl wget net-tools iputils-ping\
-    ## 添加nginx官方给的最新稳定版的源,wget这个是证书   
+    ## 添加nginx官方给的最新稳定版的源,wget这个是证书 
     && wget https://nginx.org/keys/nginx_signing.key\
     && apt-key add nginx_signing.key && rm nginx_signing*\
     && echo "deb http://nginx.org/packages/ubuntu/ xenial nginx" >> /etc/apt/sources.list\
@@ -24,7 +24,9 @@ RUN apt-get -y clean\
 USER liuhao
 WORKDIR /home/liuhao
 RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set encoding=utf-8\n:set shiftwidth=4\n:set ai\n:set ruler\n:set helplang=cn\n:set hlsearch\n:set cursorline\n:set laststatus=2" > $HOME/.vimrc\
-# Nginx 配置文件路径/etc/nginx/conf.d
+# Nginx 
+    # 这里指定安装的版本源自上面添加的NGINX官方源,官方源下载速度很慢而且需要手动添加源证书,
+    # 为什么要这么做,是因为apt安装的为nginx/1.10.3这个版本的NGINX搭配yaf只能访问indexModule indexController indexAction
  	&& sudo apt-get -y install nginx=1.14.0-1~xenial\
     && sudo sed -i '/^http/a autoindex_localtime on;' /etc/nginx/nginx.conf\
     && sudo sed -i '/^http/a autoindex on;' /etc/nginx/nginx.conf\
@@ -43,7 +45,7 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo bash -c "echo 'set \$public_root /home/liuhao/www;' >> /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo bash -c "echo 'root \$public_root;' >> /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo bash -c "echo -e \"\n\" >> /etc/nginx/conf.d/lh.localhost.conf"\
-    # 这里的!无法屏蔽,使用会被当做系统变量用或者存在和\!输出.所以干脆输出了,后面在用sed替换掉
+    # 这里的!无法屏蔽,使用会被当做系统变量用或者存在和\!输出.所以干脆将\!输出了,后面在用sed替换掉
     && sudo bash -c "echo 'if (\!-e \$request_filename) {' >> /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo bash -c "echo 'rewrite ^/(.*)  /index.php?/\$1 last;' >> /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo bash -c "echo '}' >> /etc/nginx/conf.d/lh.localhost.conf"\
