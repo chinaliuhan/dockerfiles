@@ -29,7 +29,7 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo sed -i '/^http/a autoindex_localtime on;' /etc/nginx/nginx.conf\
     && sudo sed -i '/^http/a autoindex on;' /etc/nginx/nginx.conf\
     && sudo sed -i '/^user\s\+\w\+;/c user liuhao;' /etc/nginx/nginx.conf\
-    #nginx基础配置文件Localhost
+    # nginx基础配置文件Localhost
     && sudo bash -c "echo 'server {' > /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo bash -c "echo 'listen 80;' >> /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo bash -c "echo 'server_name lh.localhost;' >> /etc/nginx/conf.d/lh.localhost.conf"\
@@ -112,7 +112,7 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && echo "mysql-server-5.5 mysql-server/root_password_again password sss" | sudo debconf-set-selections\
 	&& sudo apt-get -y install mysql-server-5.7\
     && sudo sed -i '/bind-address/c bind-address		= 0.0.0.0' /etc/mysql/mysql.conf.d/mysqld.cnf\
-    # 指定MySQL挂载目录, 这个版本的MySQL有这个问题,要不然会无法启动,提示,如果目录不存在需要加上-s命令
+    # 指定MySQL挂载目录, 这个版本的MySQL有这个问题,要不然会无法启动,提示No directory, logging in with HOME=/,注意: 如果MySQL指定的目录不存在需要加上-s命令
     && sudo usermod -d /var/lib/mysql/ mysql\
     # 其实权限是已经有的, 但是就是不要用必须要在运行一次, 而且直接在dockerfile中也不行,必须在系统中运行,,,所以我放到了下面的init.sh中
     # 如果不给权限的话,运行mysql的时候会提示没有user表.没有private表...之类的
