@@ -64,7 +64,7 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo bash -c "echo '}' >> /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo sed -i 's/\\!-e/!-e/' /etc/nginx/conf.d/lh.localhost.conf\
 # PHP环境软件 配置文件路径/etc/php/7.0/cli/php.ini /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php-fpm.conf
-    && sudo apt-get -y install php7.0 php7.0-curl php7.0-gd php7.0-dev php7.0-mbstring php7.0-opcache php7.0-zip php7.0-mysql\
+    && sudo apt-get -y install php7.0 php7.0-curl php7.0-gd php7.0-dev php7.0-mbstring php7.0-opcache php7.0-zip php7.0-mysql php7.0-bcmath\
     && wget http://pecl.php.net/get/yaf-3.0.7.tgz\
     && wget http://pecl.php.net/get/swoole-4.0.1.tgz\
     && wget http://pecl.php.net/get/redis-4.1.0.tgz\
