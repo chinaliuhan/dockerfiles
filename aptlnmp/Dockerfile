@@ -26,7 +26,7 @@ WORKDIR /home/liuhao
 RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set encoding=utf-8\n:set shiftwidth=4\n:set ai\n:set ruler\n:set helplang=cn\n:set hlsearch\n:set cursorline\n:set laststatus=2" > $HOME/.vimrc\
 # Nginx 
     # 这里指定安装的版本源自上面添加的NGINX官方源,官方源下载速度很慢而且需要手动添加源证书,
-    # 为什么要这么做,是因为apt安装的为nginx/1.10.3这个版本的NGINX搭配yaf只能访问indexModule indexController indexAction
+    # 为什么要这么做呢,是因为apt安装的为nginx/1.10.3这个版本的NGINX搭配yaf只能访问indexModule indexController indexAction
  	&& sudo apt-get -y install nginx=1.14.0-1~xenial\
     && sudo sed -i '/^http/a autoindex_localtime on;' /etc/nginx/nginx.conf\
     && sudo sed -i '/^http/a autoindex on;' /etc/nginx/nginx.conf\
