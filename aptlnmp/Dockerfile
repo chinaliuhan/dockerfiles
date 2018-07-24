@@ -123,7 +123,7 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && echo "sudo service mysql start" >> $HOME/init.sh \
     && echo "sudo service redis-server start" >> $HOME/init.sh \
     && echo "sudo service php7.0-fpm start" >> $HOME/init.sh \
-    && echo "chown -R mysql:mysql /var/lib/mysql /var/run/mysqld" >> $HOME/init.sh\
+    && echo "sudo chown -R mysql:mysql /var/lib/mysql /var/run/mysqld" >> $HOME/init.sh\
     && echo 'echo "UPDATE mysql.user SET host=\"%\" where user=\"root\"; flush privileges;" | mysql -uroot -psss' >> $HOME/init.sh \
     && echo "#! /bin/bash" >> $HOME/restart.sh\
     && echo "sudo service nginx restart" >> $HOME/restart.sh\
