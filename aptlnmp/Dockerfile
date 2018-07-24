@@ -28,7 +28,7 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
 # Nginx 
     # 这里指定安装的版本源自上面添加的NGINX官方源,官方源下载速度很慢而且需要手动添加源证书,
     # 为什么要这么做呢,是因为apt安装的为nginx/1.10.3这个版本的NGINX搭配yaf只能访问indexModule indexController indexAction
- 	&& sudo apt-get -y install nginx=1.14.0-1~xenial\
+    && sudo apt-get -y install nginx=1.14.0-1~xenial\
     && sudo sed -i '/^http/a autoindex_localtime on;' /etc/nginx/nginx.conf\
     && sudo sed -i '/^http/a autoindex on;' /etc/nginx/nginx.conf\
     && sudo sed -i '/^user\s\+\w\+;/c user liuhao;' /etc/nginx/nginx.conf\
@@ -64,35 +64,35 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo bash -c "echo '}' >> /etc/nginx/conf.d/lh.localhost.conf"\
     && sudo sed -i 's/\\!-e/!-e/' /etc/nginx/conf.d/lh.localhost.conf\
 # PHP环境软件 配置文件路径/etc/php/7.0/cli/php.ini /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php-fpm.conf
-	&& sudo apt-get -y install php7.0 php7.0-curl php7.0-gd php7.0-dev php7.0-mbstring php7.0-opcache php7.0-zip php7.0-mysql\
-	&& wget http://pecl.php.net/get/yaf-3.0.7.tgz\
-	&& wget http://pecl.php.net/get/swoole-4.0.1.tgz\
+    && sudo apt-get -y install php7.0 php7.0-curl php7.0-gd php7.0-dev php7.0-mbstring php7.0-opcache php7.0-zip php7.0-mysql\
+    && wget http://pecl.php.net/get/yaf-3.0.7.tgz\
+    && wget http://pecl.php.net/get/swoole-4.0.1.tgz\
     && wget http://pecl.php.net/get/redis-4.1.0.tgz\
     && tar -zxf ./redis-4.1.0.tgz\
     && cd redis-4.1.0 && phpize\
     && ./configure --with-php-config=/usr/bin/php-config\
     && make && sudo make install\
     && sudo bash -c "echo 'extension=redis.so' > /etc/php/7.0/mods-available/redis.ini"\
-	&& sudo ln -s /etc/php/7.0/mods-available/redis.ini /etc/php/7.0/cli/conf.d/\
-	&& sudo ln -s /etc/php/7.0/mods-available/redis.ini /etc/php/7.0/fpm/conf.d/\
+    && sudo ln -s /etc/php/7.0/mods-available/redis.ini /etc/php/7.0/cli/conf.d/\
+    && sudo ln -s /etc/php/7.0/mods-available/redis.ini /etc/php/7.0/fpm/conf.d/\
     && cd ../\
     && rm -rf ./redis*\
-	&& tar -zxf ./yaf-3.0.7.tgz\
-	&& cd yaf-3.0.7 && phpize\
-	&& ./configure --with-php-config=/usr/bin/php-config\
-	&& make && sudo make install\
+    && tar -zxf ./yaf-3.0.7.tgz\
+    && cd yaf-3.0.7 && phpize\
+    && ./configure --with-php-config=/usr/bin/php-config\
+    && make && sudo make install\
     && sudo bash -c "echo 'extension=yaf.so' > /etc/php/7.0/mods-available/yaf.ini"\
-	&& sudo ln -s /etc/php/7.0/mods-available/yaf.ini /etc/php/7.0/cli/conf.d/\
-	&& sudo ln -s /etc/php/7.0/mods-available/yaf.ini /etc/php/7.0/fpm/conf.d/\
+    && sudo ln -s /etc/php/7.0/mods-available/yaf.ini /etc/php/7.0/cli/conf.d/\
+    && sudo ln -s /etc/php/7.0/mods-available/yaf.ini /etc/php/7.0/fpm/conf.d/\
     && cd ../\
     && rm -rf ./yaf*\
-	&& tar -zxf ./swoole-4.0.1.tgz\
-	&& cd swoole-4.0.1 && phpize\
-	&& ./configure --with-php-config=/usr/bin/php-config\
-	&& make && sudo make install\
+    && tar -zxf ./swoole-4.0.1.tgz\
+    && cd swoole-4.0.1 && phpize\
+    && ./configure --with-php-config=/usr/bin/php-config\
+    && make && sudo make install\
     && sudo bash -c "echo 'extension=swoole.so' > /etc/php/7.0/mods-available/swoole.ini"\
-	&& sudo ln -s /etc/php/7.0/mods-available/swoole.ini /etc/php/7.0/cli/conf.d/\
-	&& sudo ln -s /etc/php/7.0/mods-available/swoole.ini /etc/php/7.0/fpm/conf.d/\
+    && sudo ln -s /etc/php/7.0/mods-available/swoole.ini /etc/php/7.0/cli/conf.d/\
+    && sudo ln -s /etc/php/7.0/mods-available/swoole.ini /etc/php/7.0/fpm/conf.d/\
     && cd ../\
     && rm -rf ./swoole*\
     && sudo sed -i '/^short_open_tag.*=/c short_open_tag = On' /etc/php/7.0/fpm/php.ini\
@@ -108,12 +108,12 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo sed -i '/^listen.owner\s=\s\w\+/c listen.owner = liuhao' /etc/php/7.0/fpm/pool.d/www.conf\
     && sudo sed -i '/^listen.group\s=\s\w\+/c listen.group = liuhao' /etc/php/7.0/fpm/pool.d/www.conf\
 # Redis因为高版本才能读取低版本的dump.rdb文件
-	&& sudo apt-get -y install redis-server\
+    && sudo apt-get -y install redis-server\
     && sudo sed -i '/bind 127.0.0.1/c bind 0.0.0.0' /etc/redis/redis.conf\
 # Mysql5.7
     && echo "mysql-server-5.5 mysql-server/root_password password sss" | sudo debconf-set-selections\
     && echo "mysql-server-5.5 mysql-server/root_password_again password sss" | sudo debconf-set-selections\
-	&& sudo apt-get -y install mysql-server-5.7\
+    && sudo apt-get -y install mysql-server-5.7\
     && sudo sed -i '/bind-address/c bind-address		= 0.0.0.0' /etc/mysql/mysql.conf.d/mysqld.cnf\
     # 指定MySQL挂载目录, 这个版本的MySQL有这个问题,要不然会无法启动,提示No directory, logging in with HOME=/,注意: 如果MySQL指定的目录不存在需要加上-s命令
     && sudo usermod -d /var/lib/mysql/ mysql\
