@@ -26,8 +26,8 @@ WORKDIR /home/liuhao
 ENV WWW /home/liuhao/www
 RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set encoding=utf-8\n:set shiftwidth=4\n:set ai\n:set ruler\n:set helplang=cn\n:set hlsearch\n:set cursorline\n:set laststatus=2" > $HOME/.vimrc\
     && curl https://github.com/git/git/raw/master/contrib/completion/git-completion.bash -OL\
-    && mv git-completion.bash $HOME/download/.git-completion.bash\
-    && bash -c "echo 'source ~/download/.git-completion.bash' >> $HOME/.bashrc"\
+    && mv git-completion.bash $HOME/.git-completion.bash\
+    && bash -c "echo 'source ~/.git-completion.bash' >> $HOME/.bashrc"\
 # Nginx 
     # 这里指定安装的版本源自上面添加的NGINX官方源,官方源下载速度很慢而且需要手动添加源证书,
     # 为什么要这么做呢,是因为apt安装的为nginx/1.10.3这个版本的NGINX搭配yaf只能访问indexModule indexController indexAction
