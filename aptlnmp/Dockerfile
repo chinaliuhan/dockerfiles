@@ -84,6 +84,7 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo bash -c "echo 'xdebug.scream = 0' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.show_local_vars = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.idekey = PHPSTORM' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    # 使用 dbgp 做 80 端口代理
     && sudo bash -c "echo 'xdebug.remote_handler = dbgp' >> /etc/php/7.0/mods-available/xdebug.ini"\
     # 输出的日志文件
     && sudo bash -c "echo 'xdebug.remote_log = /var/log/php/xdebug.log' >> /etc/php/7.0/mods-available/xdebug.ini"\
