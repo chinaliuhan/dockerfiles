@@ -70,6 +70,22 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && wget http://pecl.php.net/get/yaf-3.0.7.tgz\
     && wget http://pecl.php.net/get/swoole-4.0.1.tgz\
     && wget http://pecl.php.net/get/redis-4.1.0.tgz\
+    && wget https://pecl.php.net/get/xdebug-2.6.0.tgz\
+    && tar -zxf ./xdebug-2.6.0.tgz && cd xdebug-2.6.0\
+    && phpize && ./configure --with-php-config=/usr/bin/php-config\
+    && make && sudo make install\
+    && sudo bash -c "echo '[xdebug]' > /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'extension=xdebug.so' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.remote_enable = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.remote_autostart = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.remote_connect_back = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.remote_port = 9000' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.scream = 0' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.show_local_vars = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo ln -s /etc/php/7.0/mods-available/xdebug.ini /etc/php/7.0/cli/conf.d/\
+    && sudo ln -s /etc/php/7.0/mods-available/xdebug.ini /etc/php/7.0/fpm/conf.d/\
+    && cd ../\
+    && rm -rf ./xdebug*\
     && tar -zxf ./redis-4.1.0.tgz\
     && cd redis-4.1.0 && phpize\
     && ./configure --with-php-config=/usr/bin/php-config\
