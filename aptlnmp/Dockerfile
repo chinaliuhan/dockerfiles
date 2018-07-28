@@ -76,12 +76,21 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && make && sudo make install\
     && sudo bash -c "echo '[xdebug]' > /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'zend_extension=xdebug.so' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.remote_host = 127.0.0.1' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_enable = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_autostart = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_connect_back = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_port = 9000' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.scream = 0' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.show_local_vars = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.idekey = PHPSTORM' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.remote_handler = dbgp' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    # 输出的日志文件
+    && sudo bash -c "echo 'xdebug.remote_log = /var/log/php/xdebug.log' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    # 指定堆栈跟踪文件的存放目录
+    && sudo bash -c "echo 'xdebug.trace_output_dir = /var/log/php/xdebug_trace.log' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    # 指定性能分析文件的存放目录
+    && sudo bash -c "echo 'xdebug.profiler_output_dir = /var/log/php/xdebug_profiler.log' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo ln -s /etc/php/7.0/mods-available/xdebug.ini /etc/php/7.0/cli/conf.d/\
     && sudo ln -s /etc/php/7.0/mods-available/xdebug.ini /etc/php/7.0/fpm/conf.d/\
     && cd ../\
@@ -125,6 +134,8 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo sed -i '/^group\s=\s\w\+/c group = liuhao' /etc/php/7.0/fpm/pool.d/www.conf\
     && sudo sed -i '/^listen.owner\s=\s\w\+/c listen.owner = liuhao' /etc/php/7.0/fpm/pool.d/www.conf\
     && sudo sed -i '/^listen.group\s=\s\w\+/c listen.group = liuhao' /etc/php/7.0/fpm/pool.d/www.conf\
+    && sudo mkdir /var/log/php\
+    && sudo sed -i '/^error_log.*=.*/c error_log = /var/log/php/php7.0-fpm.log' /etc/php/7.0/fpm/php-fpm.conf\
 # Redis因为高版本才能读取低版本的dump.rdb文件
     && sudo apt-get -y install redis-server\
     && sudo sed -i '/bind 127.0.0.1/c bind 0.0.0.0' /etc/redis/redis.conf\
