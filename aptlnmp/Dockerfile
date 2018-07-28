@@ -75,7 +75,7 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && phpize && ./configure --with-php-config=/usr/bin/php-config\
     && make && sudo make install\
     && sudo bash -c "echo '[xdebug]' > /etc/php/7.0/mods-available/xdebug.ini"\
-    && sudo bash -c "echo 'extension=xdebug.so' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'zend_extension=xdebug.so' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_enable = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_autostart = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_connect_back = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
