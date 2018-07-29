@@ -77,19 +77,17 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo bash -c "echo '[xdebug]' > /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'zend_extension=xdebug.so' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_host = 127.0.0.1' >> /etc/php/7.0/mods-available/xdebug.ini"\
-    && sudo bash -c "echo 'xdebug.remote_enable = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.remote_enable = 0' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_autostart = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
-    && sudo bash -c "echo 'xdebug.remote_port = 9000' >> /etc/php/7.0/mods-available/xdebug.ini"\
-    && sudo bash -c "echo 'xdebug.scream = 0' >> /etc/php/7.0/mods-available/xdebug.ini"\
-    && sudo bash -c "echo 'xdebug.show_local_vars = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
-    && sudo bash -c "echo 'xdebug.idekey = PHPSTORM' >> /etc/php/7.0/mods-available/xdebug.ini"\
-    # 使用 dbgp 做 80 端口代理
+    && sudo bash -c "echo 'xdebug.remote_port = 9001' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_handler = dbgp' >> /etc/php/7.0/mods-available/xdebug.ini"\
-    # 输出的日志文件
     && sudo bash -c "echo 'xdebug.remote_log = /var/log/php/xdebug.log' >> /etc/php/7.0/mods-available/xdebug.ini"\
-    # 指定堆栈跟踪文件的存放目录
+    && sudo bash -c "echo 'xdebug.scream = 0' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "xdebug.profiler_enable = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.show_local_vars = 0' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.show_exception_trace = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.idekey = PHPSTORM' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.trace_output_dir = /var/log/php/xdebug_trace.log' >> /etc/php/7.0/mods-available/xdebug.ini"\
-    # 指定性能分析文件的存放目录
     && sudo bash -c "echo 'xdebug.profiler_output_dir = /var/log/php/xdebug_profiler.log' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo ln -s /etc/php/7.0/mods-available/xdebug.ini /etc/php/7.0/cli/conf.d/\
     && sudo ln -s /etc/php/7.0/mods-available/xdebug.ini /etc/php/7.0/fpm/conf.d/\
