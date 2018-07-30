@@ -76,8 +76,9 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && make && sudo make install\
     && sudo bash -c "echo '[xdebug]' > /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'zend_extension=xdebug.so' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.remote_connect_back = 0' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_host = 127.0.0.1' >> /etc/php/7.0/mods-available/xdebug.ini"\
-    && sudo bash -c "echo 'xdebug.remote_enable = 0' >> /etc/php/7.0/mods-available/xdebug.ini"\
+    && sudo bash -c "echo 'xdebug.remote_enable = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_autostart = 1' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_port = 9001' >> /etc/php/7.0/mods-available/xdebug.ini"\
     && sudo bash -c "echo 'xdebug.remote_handler = dbgp' >> /etc/php/7.0/mods-available/xdebug.ini"\
