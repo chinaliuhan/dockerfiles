@@ -14,4 +14,4 @@ RUN apt-get -y clean\
     && apt-get -y install sudo git vim curl wget net-tools iputils-ping
 WORKDIR $HOME
 RUN apt-get -y python3 python3-pip \
-    && pip3 install requests PySocks platform\
+    && pip3 install requests ipython
