@@ -1,4 +1,4 @@
-FROM python
+FROM ubuntu:16.04
 RUN apt-get -y clean\
     && echo "deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse"  > /etc/apt/sources.list \
     && echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse" >> /etc/apt/sources.list \
