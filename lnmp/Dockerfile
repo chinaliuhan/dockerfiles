@@ -30,7 +30,7 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
 # 下载软件(一次性下载,否则后面会下载出错)
     && wget https://cdn.mysql.com/archives/mysql-5.7/mysql-5.7.10.tar.gz\
     && wget http://nginx.org/download/nginx-1.14.0.tar.gz\
-    && wget http://cn2.php.net/distributions/php-7.0.30.tar.gz\
+    && wget http://cn2.php.net/distributions/php-7.2.8.tar.gz\
     && wget http://pecl.php.net/get/yaf-3.0.7.tgz\
     && wget http://pecl.php.net/get/swoole-4.0.1.tgz\
     && wget http://pecl.php.net/get/redis-4.1.0.tgz\
@@ -49,17 +49,17 @@ RUN whoami && pwd && bash -c '/bin/echo -e "touch nihao.php"'  \
     && mkdir $APP_PATH/nginx/conf.d\
     && cd ../\
 # PHP
-    # && wget http://cn2.php.net/distributions/php-7.0.30.tar.gz\
-    && tar -zxf ./php-7.0.30.tar.gz && cd php-7.0.30\
+    # && wget http://cn2.php.net/distributions/php-7.2.8.tar.gz\
+    && tar -zxf ./php-7.2.8.tar.gz && cd php-7.2.8/\
     && ./configure --prefix=$APP_PATH/php --with-config-file-path=$APP_PATH/php/etc --enable-fpm --with-fpm-user=liuhao --with-fpm-group=liuhao --with-mysqli --with-pdo-mysql --with-iconv-dir --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-inline-optimization --with-curl --enable-mbregex --enable-mbstring --with-mcrypt --enable-ftp --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --without-pear --with-gettext --disable-fileinfo --enable-maintainer-zts --enable-opcache --enable-exif --enable-dba  --enable-calendar --enable-sysvmsg  --enable-sysvsem --enable-sysvshm --enable-wddx --enable-phpdbg --with-bz2=/usr --with-snmp=/usr --with-tidy=/usr --with-readline=/usr --with-pdo-pgsql=/usr\
     && make && make install\
     && mkdir -p $APP_PATH/php/etc/ && cp ./php.ini-development $APP_PATH/php/etc/php.ini\
-    && cp $APP_PATH/php/etc/php-fpm.conf.default $APP_PATH/php/etc/php-fpm.conf\
-    && cp $APP_PATH/php/etc/php-fpm.d/www.conf.default $APP_PATH/php/etc/php-fpm.d/www.conf\
+    && mv $APP_PATH/php/etc/php-fpm.conf.default $APP_PATH/php/etc/php-fpm.conf\
+    && mv $APP_PATH/php/etc/php-fpm.d/www.conf.default $APP_PATH/php/etc/php-fpm.d/www.conf\
     && cd ../\
     && sudo sed -i '/^short_open_tag.*=/c short_open_tag = On' $APP_PATH/php/etc/php.ini\
     && sudo sed -i '/error_reporting.*=/c error_reporting=E_ALL' $APP_PATH/php/etc/php.ini\
-    && sudo sed -i '/display_errors.*=/c display_errors=On' $APP_PATH/php/etc/php.inii\
+    && sudo sed -i '/display_errors.*=/c display_errors=On' $APP_PATH/php/etc/php.ini\
     && sudo sed -i '/^;error_log.*=.*php_errors.log/c error_log=/var/log/php_errors.log' $APP_PATH/php/etc/php.ini\
     # redis扩展
     # && wget http://pecl.php.net/get/redis-4.1.0.tgz\
