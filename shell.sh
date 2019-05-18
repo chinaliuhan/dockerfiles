@@ -9,10 +9,10 @@ docker run -itd --name myaptlnmp -p 127.0.0.1:80:80 \
 -p 127.0.0.1:3306:3306 \
 -p 127.0.0.1:6379:6379 \
 -p 127.0.0.1:27017:27017 \
--v /Users/liuhao/dockerfolder/shell:/home/liuhao/shell \
--v /Users/liuhao/dockerfolder/download:/home/liuhao/download \
--v /Users/liuhao/dockerfolder/conf/nginx:/etc/nginx/conf.d \
--v /Users/liuhao/dockerfolder/data/redis:/var/lib/redis \
--v /Users/liuhao/dockerfolder/data/mysql:/var/lib/mysql \
--v /Users/liuhao/workSpace:/home/liuhao/www myaptlnmp \
+-v /home/liuhao/dockerfolder/shell:/home/liuhao/shell \
+-v /home/liuhao/dockerfolder/download:/home/liuhao/download \
+-v /home/liuhao/dockerfolder/conf/nginx:/etc/nginx/conf.d \
+-v /home/liuhao/dockerfolder/data/redis:/var/lib/redis \
+-v /home/liuhao/dockerfolder/data/mysql:/var/lib/mysql \
+-v /home/liuhao/workSpace:/home/liuhao/www myaptlnmp \
 /bin/bash
