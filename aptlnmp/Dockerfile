@@ -23,7 +23,7 @@ RUN apt-get -y clean\
     && chmod u+w /etc/sudoers && sed -i '/root/a liuhao  ALL=(ALL:ALL) NOPASSWD: ALL' /etc/sudoers && chmod u-w /etc/sudoers
 USER liuhao
 WORKDIR /home/liuhao
-ENV WWW /home/liuhao/www
+ENV WWW /home/liuhao/workSpace
 RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set encoding=utf-8\n:set shiftwidth=4\n:set ai\n:set ruler\n:set helplang=cn\n:set hlsearch\n:set cursorline\n:set laststatus=2" > $HOME/.vimrc\
     && bash -c "echo 'source /usr/share/bash-completion/completions/git' >> $HOME/.bashrc"\
     && bash -c 'echo -e "# Introducing custom scripts for personal mount\nif [ -f ~/shell/my_bash ]; then\n\t~/shell/my_bash\nfi" >> $HOME/.bashrc'\
@@ -139,8 +139,8 @@ RUN echo ":set nu\n:set ts=4\n:set confirm\n:syntax on\n:set showmatch\n:set enc
     && sudo apt-get -y install redis-server\
     && sudo sed -i '/bind 127.0.0.1/c bind 0.0.0.0' /etc/redis/redis.conf\
 # Mysql5.7
-    && echo "mysql-server-5.5 mysql-server/root_password password sss" | sudo debconf-set-selections\
-    && echo "mysql-server-5.5 mysql-server/root_password_again password sss" | sudo debconf-set-selections\
+    && echo "mysql-server-5.5 mysql-server/root_password password 123456" | sudo debconf-set-selections\
+    && echo "mysql-server-5.5 mysql-server/root_password_again password 123456" | sudo debconf-set-selections\
     && sudo apt-get -y install mysql-server-5.7\
     && sudo sed -i '/bind-address/c bind-address		= 0.0.0.0' /etc/mysql/mysql.conf.d/mysqld.cnf\
     # 指定MySQL挂载目录, 这个版本的MySQL有这个问题,要不然会无法启动,提示No directory, logging in with HOME=/,注意: 如果MySQL指定的目录不存在需要加上-s命令
